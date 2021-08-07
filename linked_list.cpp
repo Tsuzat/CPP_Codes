@@ -54,7 +54,7 @@ class LinkedList {
         }
 
         int lenght(){
-            return len; 
+            return len;
         }
 };
 
