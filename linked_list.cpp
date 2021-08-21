@@ -15,8 +15,9 @@ class Node{
 };
 
 class LinkedList {
-    Node* head;
+    
     public:
+        Node* head;
         int lenght;
         // constructor
         LinkedList(Node &node){
@@ -32,6 +33,10 @@ class LinkedList {
                 temp = temp->next;
             }
             cout<<"NULL";
+        }
+
+        Node* get_head(){
+            return head;
         }
 
         // append
@@ -103,6 +108,63 @@ class LinkedList {
         }
 };
 
+// reverse K nodes at a time of a linked list
+Node* reverseK(Node* &head, int k){
+    Node* previous = NULL;
+    Node* current = head;
+    Node* next_ptr;
+    int count = 0;
+    while(current != NULL && count<k){
+        next_ptr = current->next;
+        current->next = previous;
+
+        previous = current;
+        current = next_ptr;
+        count++;
+    }
+
+    if (next_ptr != NULL)
+        head->next = reverseK(next_ptr, k);
+    
+    return previous;
+}
+
+void makeCycle(Node* &head, Node* &posi){
+    int count = 1;
+    Node* temp;
+    for (temp=head; temp->next!=NULL; temp=temp->next);
+    temp->next = posi;
+}
+
+void removeCycle(Node* &head){
+    Node* slow = head;
+    Node* fast = head;
+    do
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+    } while (slow!=fast);
+    
+    // making fast = head
+    fast = head;
+    while(fast->next!=slow->next){
+        fast=fast->next;
+        slow=slow->next;
+    }
+    slow->next = NULL;
+}
+
+bool isCyclic(Node* &head){
+    Node* slow = head;
+    Node* fast = head;
+    while(fast != NULL && fast->next != NULL){
+        slow = slow -> next;
+        fast = fast->next->next;
+        if (fast == slow) return true;
+    }
+    return false;
+}
+
 int main(){
 
     Node head(1); // initialising head node for LinkedList
@@ -139,5 +201,28 @@ int main(){
     llist.reverse();
     cout<<"\nReversed Linked_list: ";
     llist.display();
+
+    // reversing K nodes at a time
+    cout<<"\nReversed k(=3) nodes: ";
+    Node* new_head = reverseK(llist.head, 3);
+    for(Node* temp = new_head; temp != NULL; temp=temp->next) cout<<temp->value<<" -> ";
+    cout<<"NULL";
+
+    // detecting cycle
+    cout<<"\nisCyclic: "<<isCyclic(llist.head);
+
+    //makeCycle
+    Node* posi = llist.find_pointer(-1);
+    makeCycle(llist.head, posi);
+    // llist.display();
+    cout<<"\nisCyclic: "<<isCyclic(llist.head);
+
+    // remove cycle
+    removeCycle(llist.head);
+    cout<<"\nisCyclic: "<<isCyclic(llist.head);
+    cout<<endl;
+    llist.display();
+
+
     return 0;
 }
