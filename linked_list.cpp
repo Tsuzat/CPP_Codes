@@ -108,6 +108,18 @@ class LinkedList {
         }
 };
 
+Node* reverse_Recursively(Node* &head){
+    if (head->next == NULL) return head;
+    Node* reversed_list = reverse_Recursively(head->next);
+    // getting last node in reversed list
+    Node* temp;
+    for (temp=reversed_list; temp->next != NULL; temp=temp->next);
+    // adding head to last element of reversed_list
+    temp->next = head;
+    head->next = NULL;
+    return reversed_list;
+}
+
 // reverse K nodes at a time of a linked list
 Node* reverseK(Node* &head, int k){
     Node* previous = NULL;
@@ -202,6 +214,12 @@ int main(){
     cout<<"\nReversed Linked_list: ";
     llist.display();
 
+    // reversing the linked list recursively
+    llist.head = reverse_Recursively(llist.head);
+    cout<<"\nRecursively Reversed Linked_list: ";
+    llist.display();
+
+
     // reversing K nodes at a time
     cout<<"\nReversed k(=3) nodes: ";
     Node* new_head = reverseK(llist.head, 3);
@@ -211,17 +229,17 @@ int main(){
     // detecting cycle
     cout<<"\nisCyclic: "<<isCyclic(llist.head);
 
-    //makeCycle
-    Node* posi = llist.find_pointer(-1);
-    makeCycle(llist.head, posi);
-    // llist.display();
-    cout<<"\nisCyclic: "<<isCyclic(llist.head);
+    // //makeCycle
+    // Node* posi = llist.find_pointer(-1);
+    // makeCycle(llist.head, posi);
+    // // llist.display();
+    // cout<<"\nisCyclic: "<<isCyclic(llist.head);
 
-    // remove cycle
-    removeCycle(llist.head);
-    cout<<"\nisCyclic: "<<isCyclic(llist.head);
-    cout<<endl;
-    llist.display();
+    // // remove cycle
+    // removeCycle(llist.head);
+    // cout<<"\nisCyclic: "<<isCyclic(llist.head);
+    // cout<<endl;
+    // llist.display();
 
 
     return 0;
