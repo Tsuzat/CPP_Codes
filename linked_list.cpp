@@ -115,7 +115,7 @@ Node* reverse_Recursively(Node* &head){
     Node* temp;
     for (temp=reversed_list; temp->next != NULL; temp=temp->next);
     // adding head to last element of reversed_list
-        temp->next = head;
+    temp->next = head;
     head->next = NULL;
     return reversed_list;
 }
